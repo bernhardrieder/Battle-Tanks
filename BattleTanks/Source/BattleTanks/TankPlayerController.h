@@ -20,4 +20,17 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	
+private:
+	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+
+public:
+	virtual void Tick(float DeltaSeconds) override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	FVector2D CrosshairLocationInViewport;
+
+
 };

@@ -18,4 +18,10 @@ public:
 	class ATank* GetControlledTank() const;
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	class ATank* GetPlayerTank() const;
+	void AimTowardsPlayer();
+public:
+	virtual void Tick(float DeltaTime) override;
 };

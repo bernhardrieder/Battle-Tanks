@@ -26,3 +26,34 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possessing a tank!"));
 	}
 }
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	if (!GetControlledTank()) return;
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	//find the crosshair location in pixel coordinates
+	int32 viewportSizeX, viewportSizeY;
+	GetViewportSize(viewportSizeX, viewportSizeY);
+	FVector2D screenLocation = FVector2D(viewportSizeX*CrosshairLocationInViewport.X, viewportSizeY*CrosshairLocationInViewport.Y);
+	
+	//UE_LOG(LogTemp, Warning, TEXT("ScreenLocation = %s"), *screenLocation.ToString());
+
+	FVector cameraWorldLocation, lookDirection;
+	
+	if(DeprojectScreenPositionToWorld(screenLocation.X, screenLocation.Y, cameraWorldLocation, lookDirection))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Look direction = %s"), *lookDirection.ToString());
+	}
+	return true;
+}
+
+void ATankPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	FVector HitLocation;
+	GetSightRayHitLocation(HitLocation);
+}
