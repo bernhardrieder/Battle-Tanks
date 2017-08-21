@@ -24,13 +24,15 @@ protected:
 private:
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetLookVectorHitLocation(const FVector& LookDirection, FVector& HitLocation) const;
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
 private:
 	UPROPERTY(EditAnywhere)
-	FVector2D CrosshairLocationInViewport;
+	FVector2D CrosshairLocationInViewport = FVector2D(0.5f, 0.33f);
 
-
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 1000000; //10 km == 10 000 m == 10 000 00 cm
 };

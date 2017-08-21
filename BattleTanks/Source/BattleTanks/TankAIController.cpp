@@ -42,13 +42,12 @@ void ATankAIController::AimTowardsPlayer()
 {
 	if (ATank* player = GetPlayerTank())
 	{
-
+		GetControlledTank()->AimAt(player->GetActorLocation());
 	}
-	else
-		return;
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AimTowardsPlayer();
 }
