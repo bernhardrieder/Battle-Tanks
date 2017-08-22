@@ -12,10 +12,10 @@ class BATTLETANKS_API ATank : public APawn
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	class UTankAimingComponent* AimingComponent;
+	class UTankAimingComponent* AimingComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float ProjectileLaunchSpeed = 100000; //sensible starting value of 1000 m/s
+	float ProjectileLaunchSpeed = 4000; 
 
 public:
 	// Sets default values for this pawn's properties
@@ -25,6 +25,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(class UTankBarrel* TankBarrel);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(class UTankTurret* TankTurret);
 
 protected:
 	// Called when the game starts or when spawned

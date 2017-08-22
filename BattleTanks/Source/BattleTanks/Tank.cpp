@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 // Sets default values
 ATank::ATank()
@@ -21,6 +22,11 @@ void ATank::AimAt(const FVector& Location)
 void ATank::SetBarrelReference(UTankBarrel* TankBarrel)
 {
 	AimingComponent->SetBarrelReference(TankBarrel);
+}
+
+void ATank::SetTurretReference(UTankTurret* TankTurret)
+{
+	AimingComponent->SetTurretReference(TankTurret);
 }
 
 // Called when the game starts or when spawned

@@ -19,6 +19,7 @@ public:
 	void AimAt(const FVector& Location, const float& ProjectileLaunchSpeed);
 
 	void SetBarrelReference(class UTankBarrel* TankBarrel);
+	void SetTurretReference(class UTankTurret* TankTurret);
 
 protected:
 	// Called when the game starts
@@ -32,4 +33,5 @@ public:
 
 private:
 	class UTankBarrel* Barrel;
+	class UTankTurret* Turret;
 };
