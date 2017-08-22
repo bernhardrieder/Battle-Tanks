@@ -17,6 +17,10 @@ class BATTLETANKS_API ATank : public APawn
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float ProjectileLaunchSpeed = 4000; 
 
+	UPROPERTY(EditAnywhere, Category = Setup)
+	//UClass* ProjectileBP;
+	TSubclassOf<class ATankBarrelProjectile> BP_Projectile;
+
 public:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -29,6 +33,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(class UTankTurret* TankTurret);
 
+	UFUNCTION(BlueprintCallable, Category = "Tank Actions")
+	void Fire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,5 +47,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	
+private:
+	class UTankBarrel* Barrel;
 };
