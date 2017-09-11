@@ -30,7 +30,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	FVector2D CrosshairLocationInViewport = FVector2D(0.5f, 0.33f);
 
 	UPROPERTY(EditAnywhere)

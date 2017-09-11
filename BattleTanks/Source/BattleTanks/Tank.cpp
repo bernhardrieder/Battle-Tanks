@@ -34,11 +34,14 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s fires!"), *GetName());
-	
-	if (!Barrel) return;
-	ATankBarrelProjectile* projectile = GetWorld()->SpawnActor<ATankBarrelProjectile>(BP_Projectile, Barrel->GetSocketTransform(FName("Output")));
-	projectile->LaunchProjectile(ProjectileLaunchSpeed);
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+
+	if (Barrel && isReloaded)
+	{
+		ATankBarrelProjectile* projectile = GetWorld()->SpawnActor<ATankBarrelProjectile>(BP_Projectile, Barrel->GetSocketTransform(FName("Output")));
+		projectile->LaunchProjectile(ProjectileLaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
 }
 
 // Called when the game starts or when spawned

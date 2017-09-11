@@ -11,15 +11,18 @@ class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	class UTankAimingComponent* AimingComponent = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ProjectileLaunchSpeed = 4000; 
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBP;
 	TSubclassOf<class ATankBarrelProjectile> BP_Projectile;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeInSeconds = 3.f;
 
 public:
 	// Sets default values for this pawn's properties
@@ -49,4 +52,7 @@ public:
 	
 private:
 	class UTankBarrel* Barrel;
+
+	float LastFireTime = 0.f;
+
 };
