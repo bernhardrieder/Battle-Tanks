@@ -44,12 +44,16 @@ public:
 protected:
 	void MoveBarrelTowards(const FVector& AimDirection);
 
+	bool IsBarrelMoving() const;
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
 private:
 	class UTankBarrel* Barrel = nullptr;
 	class UTankTurret* Turret = nullptr;
 
 	float LastFireTime = 0.f;
-
+	FVector AimDirection;
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
