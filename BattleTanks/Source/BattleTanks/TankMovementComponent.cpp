@@ -3,15 +3,14 @@
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
 
-void UTankMovementComponent::IntendMoveForward(const float& Throw)
+void UTankMovementComponent::IntendMoveForward(const float& Throw) const
 {
 	if (!LeftTrack || !RightTrack) return;
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
-	//TODO: prevent double-speed to due dual control
 }
 
-void UTankMovementComponent::IntendTurnRight(const float& Throw)
+void UTankMovementComponent::IntendTurnRight(const float& Throw) const
 {
 	if (!LeftTrack || !RightTrack) return;
 	LeftTrack->SetThrottle(Throw);
@@ -23,3 +22,16 @@ void UTankMovementComponent::Initialize(UTankTrack* LeftTrack, UTankTrack* Right
 	this->LeftTrack = LeftTrack;
 	this->RightTrack = RightTrack;
 }
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	auto tankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto aiForwardIntention = MoveVelocity.GetSafeNormal();
+
+	auto forwardThrow = FVector::DotProduct(tankForward, aiForwardIntention);
+	IntendMoveForward(forwardThrow);
+
+	auto rightThrow = FVector::CrossProduct(aiForwardIntention, tankForward).Z;
+	IntendTurnRight(-rightThrow);
+}
+
