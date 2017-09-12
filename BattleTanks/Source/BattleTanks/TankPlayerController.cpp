@@ -1,29 +1,27 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
-#include "Tank.h"
 #include "Engine/World.h"
-
-
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
+#include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if(ensure(AimingComponent))
+	{
+		FoundAimingComponent(AimingComponent);
+	}
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (ATank* tank = GetControlledTank())
+	if (!ensure(AimingComponent)) return;
+
+	FVector hitLocation;
+	if (GetSightRayHitLocation(hitLocation))
 	{
-		FVector hitLocation;
-		if (GetSightRayHitLocation(hitLocation))
-		{
-			tank->AimAt(hitLocation);
-		}
+		AimingComponent->AimAt(hitLocation);
 	}
 }
 

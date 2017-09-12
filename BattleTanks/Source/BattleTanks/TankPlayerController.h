@@ -6,19 +6,21 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h" // must be the last include!!!
 
+
+class UTankAimingComponent;
+
 /**
- * 
+ * Responsible for helping the player 
  */
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
-	class ATank* GetControlledTank() const;
-
-
 protected:
+	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+	void FoundAimingComponent(UTankAimingComponent* AimingComponent);
+
 	virtual void BeginPlay() override;
 	
 private:
@@ -35,4 +37,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float LineTraceRange = 1000000; //10 km == 10 000 m == 10 000 00 cm
+
+	class UTankAimingComponent* AimingComponent = nullptr;
 };

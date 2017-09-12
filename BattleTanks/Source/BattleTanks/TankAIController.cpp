@@ -5,20 +5,24 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankPlayerController.h"
 #include "Engine/World.h"
+#include "TankAimingComponent.h"
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	auto playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto controlledTank = Cast<ATank>(GetPawn());
 
-	if(playerTank)
-	{
-		MoveToActor(playerTank, AcceptanceRadius);
+	if (!ensure(playerTank) || !ensure(AimingComponent)) return;
+	
+	MoveToActor(playerTank, AcceptanceRadius);
 
-		controlledTank->AimAt(playerTank->GetActorLocation());
+	AimingComponent->AimAt(playerTank->GetActorLocation());
+	AimingComponent->Fire();
+}
 
-		controlledTank->Fire();
-	}
+void ATankAIController::BeginPlay()
+{
+	Super::BeginPlay();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 }

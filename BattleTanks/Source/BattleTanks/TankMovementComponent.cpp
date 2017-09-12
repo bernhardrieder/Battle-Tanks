@@ -3,16 +3,16 @@
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
 
-void UTankMovementComponent::IntendMoveForward(const float& Throw) const
+void UTankMovementComponent::IntendMoveForward(const float& Throw)
 {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack) || !ensure(RightTrack)) return;
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 }
 
-void UTankMovementComponent::IntendTurnRight(const float& Throw) const
+void UTankMovementComponent::IntendTurnRight(const float& Throw)
 {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack) || !ensure(RightTrack)) return;
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }

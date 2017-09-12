@@ -15,18 +15,19 @@ class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category = Movement)
-	void IntendMoveForward(const float& Throw) const;
+	UFUNCTION(BlueprintCallable, Category = "Movement") //DON'T MAKE THIS CONST -> breaks BP flow
+	void IntendMoveForward(const float& Throw);
 
-	UFUNCTION(BlueprintCallable, Category = Movement)
-	void IntendTurnRight(const float& Throw) const;
+	UFUNCTION(BlueprintCallable, Category = "Movement") //DON'T MAKE THIS CONST -> breaks BP flow
+	void IntendTurnRight(const float& Throw);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(class UTankTrack* LeftTrack, class UTankTrack* RightTrack);
 
 private:
 	// Called from the pathfinding logic by the AI controllers
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 private:
 	class UTankTrack* LeftTrack = nullptr;
 	class UTankTrack* RightTrack = nullptr;
