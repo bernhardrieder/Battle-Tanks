@@ -30,6 +30,9 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ProjectileLaunchSpeed = 4000;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int32 RoundsLeft = 3;
+
 public:	
 	// Sets default values for this component's properties
 	UTankAimingComponent();
@@ -46,7 +49,7 @@ public:
 	EFiringStatus GetFiringStatus() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void BeginPlay() override;
@@ -61,7 +64,6 @@ private:
 
 	float LastFireTime = 0.f;
 	FVector AimDirection;
-	int RoundsLeft = 3;
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

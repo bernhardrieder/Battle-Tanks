@@ -2,6 +2,8 @@
 
 #include "TankBarrelProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ATankBarrelProjectile::ATankBarrelProjectile()
@@ -11,6 +13,15 @@ ATankBarrelProjectile::ATankBarrelProjectile()
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Movement Component");
 	MovementComponent->bAutoActivate = false;
+
+	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>("CollisionMesh");
+	SetRootComponent(CollisionMesh);
+	CollisionMesh->SetNotifyRigidBodyCollision(true);
+	CollisionMesh->SetVisibility(false);
+
+	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>("Launch Blast");
+	auto attachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
+	LaunchBlast->AttachToComponent(RootComponent, attachmentRules);
 }
 
 // Called when the game starts or when spawned

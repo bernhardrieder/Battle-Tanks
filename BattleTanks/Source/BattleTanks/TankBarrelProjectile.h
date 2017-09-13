@@ -11,9 +11,6 @@ class BATTLETANKS_API ATankBarrelProjectile : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	class UProjectileMovementComponent* MovementComponent;
-	
 public:	
 	// Sets default values for this actor's properties
 	ATankBarrelProjectile();
@@ -28,4 +25,13 @@ public:
 
 	void LaunchProjectile(const float& Speed);
 	
+private:
+	UPROPERTY(EditAnywhere, Category = "Components")
+	class UProjectileMovementComponent* MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UStaticMeshComponent* CollisionMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UParticleSystemComponent* LaunchBlast = nullptr;
 };
