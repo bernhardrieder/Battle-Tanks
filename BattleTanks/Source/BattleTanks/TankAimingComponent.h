@@ -41,6 +41,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tank Actions")
 	void Fire();
 
+	UFUNCTION(BlueprintCallable)
+	EFiringStatus GetFiringStatus() const;
+
 protected:
 	void MoveBarrelTowards(const FVector& AimDirection);
 

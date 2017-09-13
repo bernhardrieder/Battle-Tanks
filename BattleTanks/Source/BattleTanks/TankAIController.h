@@ -21,7 +21,8 @@ protected:
 	virtual void BeginPlay() override;
 private:
 	//how can the ai tank get to the player tank
-	float AcceptanceRadius = 3000.f;
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float AcceptanceRadius = 6000.f;
 
 	class UTankAimingComponent* AimingComponent = nullptr;
 };
