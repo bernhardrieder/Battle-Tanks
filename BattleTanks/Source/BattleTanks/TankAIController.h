@@ -19,6 +19,12 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnPossesedTankDeath();
+
+public:
+	virtual void SetPawn(APawn* InPawn) override;
 private:
 	//how can the ai tank get to the player tank
 	UPROPERTY(EditAnywhere, Category = "Setup")

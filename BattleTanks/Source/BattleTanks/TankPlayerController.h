@@ -23,6 +23,9 @@ protected:
 
 	virtual void BeginPlay() override;
 	
+	UFUNCTION()
+	void OnPossesedTankDeath();
+
 private:
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
@@ -31,6 +34,7 @@ private:
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void SetPawn(APawn* InPawn) override;
 private:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D CrosshairLocationInViewport = FVector2D(0.5f, 0.33f);
