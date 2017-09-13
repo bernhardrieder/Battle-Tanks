@@ -12,6 +12,7 @@ enum class EFiringStatus : uint8
 	Locked,
 	Aiming,
 	Reloading,
+	OutOfAmmo
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -41,22 +42,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tank Actions")
 	void Fire();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Firing")
 	EFiringStatus GetFiringStatus() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
 
 protected:
 	void MoveBarrelTowards(const FVector& AimDirection);
-
 	bool IsBarrelMoving() const;
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void BeginPlay() override;
+
 private:
 	class UTankBarrel* Barrel = nullptr;
 	class UTankTurret* Turret = nullptr;
 
 	float LastFireTime = 0.f;
 	FVector AimDirection;
+	int RoundsLeft = 3;
+
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
