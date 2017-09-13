@@ -4,6 +4,9 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 // Sets default values
 ATankBarrelProjectile::ATankBarrelProjectile()
@@ -20,15 +23,22 @@ ATankBarrelProjectile::ATankBarrelProjectile()
 	CollisionMesh->SetVisibility(false);
 
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>("Launch Blast");
-	auto attachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
-	LaunchBlast->AttachToComponent(RootComponent, attachmentRules);
+	LaunchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>("Impact Blast");
+	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ImpactBlast->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>("Explosion Force");
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ExplosionForce->bAutoActivate = false;
 }
 
 // Called when the game starts or when spawned
 void ATankBarrelProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CollisionMesh->OnComponentHit.AddDynamic(this, &ATankBarrelProjectile::OnHit);
 }
 
 // Called every frame
@@ -42,5 +52,23 @@ void ATankBarrelProjectile::LaunchProjectile(const float& Speed)
 {
 	MovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector*Speed);
 	MovementComponent->Activate();
+}
+
+void ATankBarrelProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	LaunchBlast->Deactivate();
+	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse();
+
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle timer;
+	GetWorld()->GetTimerManager().SetTimer(timer, this, &ATankBarrelProjectile::OnDestroyTimerExpired, DestroyDelay, false);
+}
+
+void ATankBarrelProjectile::OnDestroyTimerExpired()
+{
+	Destroy();
 }
 
