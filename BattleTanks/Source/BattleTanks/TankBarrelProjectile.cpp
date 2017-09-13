@@ -7,6 +7,7 @@
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATankBarrelProjectile::ATankBarrelProjectile()
@@ -62,6 +63,15 @@ void ATankBarrelProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
+
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		Damage,
+		GetActorLocation(),
+		ExplosionForce->Radius, //for consistency
+		UDamageType::StaticClass(),
+		TArray<AActor*>() //damage all actors
+	);
 
 	FTimerHandle timer;
 	GetWorld()->GetTimerManager().SetTimer(timer, this, &ATankBarrelProjectile::OnDestroyTimerExpired, DestroyDelay, false);
