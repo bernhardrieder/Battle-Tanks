@@ -21,8 +21,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(const float& Throttle);
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
+private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void ApplySidewaysForce();
+	void DriveTrack();
 
 private:
-	UTankTrack();
+	float CurrentThrottle = 0;
 };
